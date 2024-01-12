@@ -3,12 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - agent02
+  - agent01
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Spawn
   - Water
   - UI
   - 

@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class AiAutonomousAgent : AiAgent
 {
-	public AiPerception seekperception = null;
-	public AiPerception fleeperception = null;
-	public AiPerception flockperception = null;
+	[SerializeField] AiPerception seekperception = null;
+	[SerializeField] AiPerception fleeperception = null;
+	[SerializeField] AiPerception flockperception = null;
+	[SerializeField] AiPerception obstaclePerecption = null;
+
+
 
 	private void Update()
 	{
@@ -37,15 +40,22 @@ public class AiAutonomousAgent : AiAgent
 			var gameObj = flockperception.GetGameObjects();
 			if (gameObj.Length > 0)
 			{
-				print("x");
 				movement.ApplyForce(Cohesion(gameObj));
 				movement.ApplyForce(Aligmenment(gameObj));
 				movement.ApplyForce(Separation(gameObj, 3));
 			}
 		}
 
-		print(movement.Velocity);
-
+		//obstacle adoviance
+		if(obstaclePerecption != null)
+		{
+			if (((AiSphareCastPerception)obstaclePerecption).CheckDirection(Vector3.forward)){
+				Vector3 open = Vector3.zero;
+				if(((AiSphareCastPerception)obstaclePerecption).GetOpenDirection(ref open)){
+					movement.ApplyForce(GetSteeringForce(open) * 5);
+				}
+			}
+		}
 		//warp positon in world
 		transform.position = Utilities.Wrap(transform.position, new Vector3(-10, -10, -10), new Vector3(10, 10, 10));
 	}

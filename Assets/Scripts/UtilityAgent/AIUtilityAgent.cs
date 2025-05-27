@@ -25,11 +25,17 @@ public class AIUtilityAgent : AiAgent
 		get
 		{
 			// Total up total motives (desires) of all needs
+			float tolalMotives = 0;
+
+			foreach(var need in needs)
+			{
+				tolalMotives += need.motive;
+			}
 
 			// Calculate happiness level based on the average fulfillment of needs
 			// The lower the total motives (desires), the happier the agent
 			// If the agent has a high amount of desires then they are unhappy (unfulfilled)
-			return 0; // 1 - (divide total motives by number of needs to get average)
+			return 1 - (tolalMotives / needs.Length);
 		}
 	}
 

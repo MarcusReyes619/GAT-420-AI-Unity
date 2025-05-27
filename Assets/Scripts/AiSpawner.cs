@@ -6,6 +6,7 @@ public class AiSpawner : MonoBehaviour
 {
 	public AiAgent[] agents;
 	public LayerMask layerMask;
+	private List<AiAgent> list = new List<AiAgent>();
 
 	int index = 0;
 
@@ -20,9 +21,18 @@ public class AiSpawner : MonoBehaviour
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))
 			{
-			  Instantiate(agents[index], hitInfo.point, Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up));
-
+				list.Add(Instantiate(agents[index], hitInfo.point, Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up)));
+				
 			}
 		}
 	}
+
+	public void KillAllAgents()
+    {
+		foreach(var ai in list)
+        {
+			AIStateAgent stateAI = ai.GetComponent<AIStateAgent>();
+			stateAI.stateMachine.SetState(nameof(AIDeathState));
+        }
+    }
 }

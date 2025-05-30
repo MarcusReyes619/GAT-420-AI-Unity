@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AiSpawner : MonoBehaviour
+public class AiSpawner : MonoBehaviour 
 {
 	public AiAgent[] agents;
 	public LayerMask layerMask;
 	private List<AiAgent> list = new List<AiAgent>();
+	public AiMediator aiMediator = new AiMediator();
 
 	int index = 0;
 
@@ -25,14 +26,23 @@ public class AiSpawner : MonoBehaviour
 				
 			}
 		}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+			KillAll();
+        }
 	}
 
-	public void KillAllAgents()
+    public void Spawn()
     {
-		foreach(var ai in list)
-        {
-			AIStateAgent stateAI = ai.GetComponent<AIStateAgent>();
-			stateAI.stateMachine.SetState(nameof(AIDeathState));
-        }
+        throw new System.NotImplementedException();
     }
+
+    public void KillAll()
+    {
+		foreach (var ai in list)
+		{
+			AIStateAgent stateAI = ai.GetComponent<AIStateAgent>();
+			stateAI.health -= 10000;
+		}
+	}
 }

@@ -18,6 +18,8 @@ public class AIStateAgent : AiAgent
     public ValueRef<float> enemyDesomation = new ValueRef<float>();
     public ValueRef<float> enemyHP = new ValueRef<float>();
 
+    AiConcrete aiConcrete;
+
     public AIStateAgent enemy { get; private set; }
     private void Start()
     {
@@ -30,6 +32,9 @@ public class AIStateAgent : AiAgent
 
         stateMachine.SetState(nameof(AIIdleState));
 
+        //Software patter class dont worry about it
+        aiConcrete = new AiConcrete(GameObject.Find("AISpawner").GetComponent<AiSpawner>().aiMediator);
+        aiConcrete.Request();
         
     }
     
@@ -39,6 +44,8 @@ public class AIStateAgent : AiAgent
         if(health <= 0)
         {
             stateMachine.SetState(nameof(AIDeathState));
+            //Software patter dont mind it
+            aiConcrete.Died();
         }
 
         var enemies = enemyPerception.GetGameObjects();
